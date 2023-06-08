@@ -21,7 +21,7 @@ db.user=require('./user')(sequelize,DataTypes)
 db.contact= require('./contact')(sequelize,DataTypes);
 
 //association 
-// db.user.hasMany(db.contact,{ foreignKey: 'user_id' })
+// db.user.hasOne(db.contact,{ foreignKey: 'user_id' })
 // db.contact.belongsTo(db.user,{ foreignKey: 'user_id' })
 
 // db.contact.hasMany(db.user, {foreignKey: 'user_id'})
