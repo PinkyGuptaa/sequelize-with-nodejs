@@ -84,8 +84,6 @@ var updateUser = async (req,res)=>{
 }
 const { QueryTypes } = require('sequelize');
 
-
-
 var rawQueries = async (req,res) =>{
 
     const users = await db.sequelize.query('SELECT * FROM "User" where id = $id',
@@ -160,12 +158,35 @@ var data = await User.findAll({
             atributes:['permanent_address', 'current_address']
         }
     ],
-
 })
-
     res.status(200).json({data:data})
 }
-
+var loadingUser = async (req, res)=>{
+    // var data =await User.create( {firstName: 'Pink', lastName:'Gupta'})
+    // if (data && data.id){
+    //     await Contact.create({permanent_address:'karol bagh', current_address:'delhi','UserId': data.id})
+    // }
+    // res.status(200).json({data})
+    var data = await User.findAll({
+        // where:{
+        //     id:2
+        // }
+        
+        include: [
+            {
+                
+                model:Contact,
+            // attributes:'permanent_address'
+        }
+        ]
+        
+        
+    })
+    res.status(200).json({data})
+    //lazy loading 
+    // var contactData = await data.getContacts();
+    // res.status(200).json({data:data, contactData: contactData})
+}
 module.exports={
     addUser,
     getUsers,
@@ -176,5 +197,6 @@ module.exports={
     rawQueries,
     oneToOne,
     onetomany,
-    manytomany
+    manytomany,
+    loadingUser
 }

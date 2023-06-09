@@ -13,12 +13,19 @@ const User = sequelize.define('User', {
   lastName: {
     type: DataTypes.STRING
     // allowNull defaults to true
-  }
+  },
+  // deletedAt:{
+  //   type: DataTypes.NOW,
+  //   allowNull: false
+
+  // }
 }, {
   // Other model options go here
   tableName: 'User',
   freezeTableName: true,
-  timestamps: false
+  timestamps: false,
+  // paranoid: true, 
+  // deletedAt: 'soft_delete'
 
 });
 return User;
