@@ -26,6 +26,8 @@ app.get('/onetomany', userCtrl.onetomany)
 app.get('/manytomany', userCtrl.manytomany)
 
 app.get('/loading', userCtrl.loadingUser)
+app.get('/eagerloading', userCtrl.eagerloadingUser)
+app.get('/creatinguser', userCtrl.creatingUser)
 // Contact.sync({force: true})
 //its very tedious to do for one one by so we use sequelize.sync method
 app.listen(4000,()=>{

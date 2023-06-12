@@ -1,6 +1,8 @@
 var db = require('../models')
 var User = db.user;
 var Contact = db.contact;
+var Education = db.education;
+var ContactUser = db.contactUser
 const {Sequelize } = require('sequelize')
 
 var addUser = async (req, res)=>{
@@ -187,6 +189,61 @@ var loadingUser = async (req, res)=>{
     // var contactData = await data.getContacts();
     // res.status(200).json({data:data, contactData: contactData})
 }
+var eagerloadingUser = async (req, res) =>{
+    var data = await User.findAll({
+    //     include: [{
+    //         model : Contact,
+
+    //     }, 
+    //    { model: Education}]
+
+    // nested 
+    include: {
+        model : Contact,
+        include:{
+            model : Education,
+            where: {id:1}
+        }, 
+        where: {
+            id: 2
+        }
+    }
+    //include all model
+    // include: {all: true, nested: true}
+    })
+    res.status(200).json({data})
+}
+var creatingUser = async (req, res) =>{
+    await Contact.create([
+        
+    //     {
+    //     permanent_address: 'delhi',
+    //     current_address: 'noida',
+    //     users:{
+    //         firstName: 'pinky',
+    //         lastName: 'gupta'
+    //     }
+    // },
+    {
+        permanent_address: 'delhi',
+        current_address: 'noida',
+        users:{
+            firstName: 'shahz',
+            lastName: 'parveen'
+        }
+    },
+    {
+        include: [db.contactUser]
+    }])
+    var data = await User.findAll({
+        include: {
+            model : Contact,
+        }
+    })
+    res.status(200).json({data: data})
+}
+
+
 module.exports={
     addUser,
     getUsers,
@@ -198,5 +255,7 @@ module.exports={
     oneToOne,
     onetomany,
     manytomany,
-    loadingUser
+    loadingUser,
+    eagerloadingUser,
+    creatingUser
 }

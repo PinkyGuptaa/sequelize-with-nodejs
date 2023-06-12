@@ -2,7 +2,7 @@ const {Sequelize, DataTypes, Model} = require ('sequelize')
 const sequelize = new Sequelize('db', 'postgres', 'postgres',{
     host:'localhost',
     dialect: 'postgres',
-    logging: true//stop log details 
+    logging: true// log details 
 });
 
 try{
@@ -19,10 +19,20 @@ db.sequelize=sequelize;
 
 db.user=require('./user')(sequelize,DataTypes)
 db.contact= require('./contact')(sequelize,DataTypes);
+db.education = require('./education')(sequelize, DataTypes)
 
 //association 
+// db.user.hasMany(db.contact,{ foreignKey: 'UserId' })
+// db.contact.belongsTo(db.user,{ foreignKey: 'UserId' })
+
+// save entry in two table using one create function
 db.user.hasMany(db.contact,{ foreignKey: 'UserId' })
-db.contact.belongsTo(db.user,{ foreignKey: 'UserId' })
+db.contactUser = db.contact.belongsTo(db.user,{ foreignKey: 'UserId', as: 'users' })
+
+
+db.contact.hasMany(db.education,{ foreignKey: 'ContactId' })
+db.education.belongsTo(db.contact,{ foreignKey: 'ContactId' })
+
 
 // db.contact.hasMany(db.user, {foreignKey: 'user_id'})
 // db.user.belongsTo(db.contact, )
